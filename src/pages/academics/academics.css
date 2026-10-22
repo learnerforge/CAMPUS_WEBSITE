@@ -227,6 +227,12 @@
   gap: var(--sp-4);
 }
 
+.acad__course-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .acad__course-head {
   display: flex;
   align-items: center;

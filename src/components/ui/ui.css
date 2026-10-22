@@ -21,6 +21,10 @@
   background: var(--surface);
 }
 
+.card__head-text {
+  min-width: 0;
+}
+
 .card__title {
   font-size: var(--fs-lg);
   font-weight: 600;
@@ -525,6 +529,10 @@
   justify-content: space-between;
   gap: var(--sp-4);
   flex-wrap: wrap;
+}
+
+.page-header__text {
+  min-width: 0;
 }
 
 .page-header__title {

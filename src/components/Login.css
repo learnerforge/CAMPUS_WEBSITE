@@ -569,6 +569,17 @@
   transform: translateY(0);
 }
 
+/* Brand tints */
+.google-btn:hover {
+  border-color: #dadce0;
+  background: #f8f9fa;
+}
+
+.microsoft-btn:hover {
+  border-color: #d8d8d8;
+  background: #f5f5f5;
+}
+
 /* Inline error / info banner */
 .login-error {
   display: flex;

@@ -116,6 +116,13 @@
 
 .modtile:hover .modtile__arrow { transform: translateX(3px); color: var(--tile-accent); }
 
+/* ---- Page ---- */
+.dash {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 /* ---- Grid ---- */
 .dash__grid {
   display: grid;
@@ -132,6 +139,18 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-4);
+}
+
+.dash__activity,
+.dash__insights {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.dash__activity .card__body {
+  flex: 1;
+  min-height: 0;
 }
 
 /* ---- Feed ---- */

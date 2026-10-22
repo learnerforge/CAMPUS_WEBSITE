@@ -145,6 +145,12 @@
   gap: var(--sp-4);
 }
 
+.ptr__course-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .ptr__course-head {
   display: flex;
   align-items: center;

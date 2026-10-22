@@ -2,6 +2,12 @@
    Medha AI assistant
    ========================================================================== */
 
+.medha {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .medha__layout {
   display: grid;
   grid-template-columns: 1.55fr 1fr;
@@ -93,6 +99,11 @@
   display: flex;
   gap: 10px;
   max-width: 88%;
+}
+
+.medha__msg--assistant {
+  justify-content: flex-start;
+  align-self: flex-start;
 }
 
 .medha__msg--user {

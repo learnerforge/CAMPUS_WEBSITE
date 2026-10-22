@@ -2,6 +2,12 @@
    ListPage
    ========================================================================== */
 
+.listpage {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
 .listpage__stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));

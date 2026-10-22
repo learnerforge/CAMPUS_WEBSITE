@@ -170,7 +170,7 @@ export default function AppShell({ children, title }) {
             <button className="shell__icon-btn" aria-label="Help">
               <Icon name="help" size={18} />
             </button>
-            <button className="shell__icon-btn shell__icon-btn--notif" aria-label="Notifications">
+            <button className="shell__icon-btn" aria-label="Notifications">
               <Icon name="bell" size={18} />
               <i className="shell__notif-dot" />
             </button>
