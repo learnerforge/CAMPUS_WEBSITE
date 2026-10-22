@@ -125,7 +125,7 @@ export function FacultyPortal() {
 /* ------------------------------------------------------------------ */
 
 export function FacultyStudents() {
-  const toast = useToast()
+  const exportCsv = useExport()
   const [tab, setTab] = useState('sections')
 
   const sections = [
@@ -148,7 +148,25 @@ export function FacultyStudents() {
         title="My Students"
         subtitle="Sections and learners assigned to you"
         actions={
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Attendance sheet exported')}>
+          <Button
+            variant="secondary"
+            icon="download"
+            onClick={() =>
+              exportCsv(
+                'faculty-students',
+                [
+                  { key: 'roll', header: 'Roll No' },
+                  { key: 'name', header: 'Student' },
+                  { key: 'section', header: 'Section' },
+                  { key: 'attendance', header: 'Attendance %' },
+                  { key: 'cgpa', header: 'CGPA' },
+                  { key: 'status', header: 'Status' },
+                ],
+                students,
+                { label: 'students' },
+              )
+            }
+          >
             Export Sheet
           </Button>
         }

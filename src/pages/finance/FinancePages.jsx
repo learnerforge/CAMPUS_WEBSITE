@@ -15,6 +15,7 @@ import {
 } from '../../components/ui'
 import ListPage, { col } from '../../components/ListPage'
 import { useToast } from '../../context/ToastContext'
+import { useExport } from '../../utils/useExport'
 import {
   FEE_STRUCTURES,
   PAYMENTS,
@@ -22,7 +23,6 @@ import {
   EXPENSES,
   PAYROLL,
   FEE_COLLECTION_TREND,
-  STUDENTS,
 } from '../../data/mock'
 import './finance.css'
 
@@ -32,6 +32,7 @@ import './finance.css'
 
 export function FinanceOverview() {
   const toast = useToast()
+  const exportCsv = useExport()
   const totalExpected = FEE_STRUCTURES.reduce((s, f) => s + f.amount * f.students, 0)
   const totalCollected = FEE_STRUCTURES.reduce((s, f) => s + f.amount * f.paid, 0)
   const totalPending = totalExpected - totalCollected
@@ -61,7 +62,25 @@ export function FinanceOverview() {
         breadcrumb={[{ label: 'Campus Systems' }, { label: 'Finance' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Finance report exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'finance-collection-trend',
+                  [
+                    { key: 'month', header: 'Month' },
+                    { key: 'collected', header: 'Collected (₹)' },
+                    { key: 'target', header: 'Target (₹)' },
+                    { key: 'variance', header: 'Variance (₹)', csv: (r) => r.collected - r.target },
+                  ],
+                  FEE_COLLECTION_TREND,
+                  { label: 'months' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('Payment entry form opened')}>Record Payment</Button>
           </>
         }
@@ -163,10 +182,7 @@ export function FeeStructurePage() {
         { label: 'Defaulters', value: FEE_STRUCTURES.reduce((s, f) => s + f.pending, 0), icon: 'alert', accent: 'danger' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Fee structure exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('Fee head form opened')}>Add Fee Head</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('Fee head form opened')}>Add Fee Head</Button>
       }
       columns={[
         col.text('category', 'Category', { primary: true }),
@@ -222,6 +238,7 @@ export function FeeStructurePage() {
 
 export function PaymentsPage() {
   const toast = useToast()
+  const exportCsv = useExport()
   const [tab, setTab] = useState('all')
 
   const tabRows = useMemo(() => {
@@ -237,7 +254,31 @@ export function PaymentsPage() {
         breadcrumb={[{ label: 'Finance' }, { label: 'Fee Payments' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Payment register exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'fee-payments',
+                  [
+                    { key: 'id', header: 'Receipt' },
+                    { key: 'student', header: 'Roll No' },
+                    { key: 'name', header: 'Student' },
+                    { key: 'program', header: 'Programme' },
+                    { key: 'category', header: 'Category' },
+                    { key: 'amount', header: 'Amount (₹)' },
+                    { key: 'mode', header: 'Mode' },
+                    { key: 'txn', header: 'Transaction ID' },
+                    { key: 'date', header: 'Date' },
+                    { key: 'status', header: 'Status' },
+                  ],
+                  tabRows,
+                  { label: 'transactions' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('Manual payment entry opened')}>Record Payment</Button>
           </>
         }
@@ -384,10 +425,7 @@ export function ExpensesPage() {
         { label: 'Rejected', value: EXPENSES.filter((e) => e.status === 'Rejected').length, icon: 'xCircle', accent: 'danger' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Expense report exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('Expense claim form opened')}>New Expense</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('Expense claim form opened')}>New Expense</Button>
       }
       columns={[
         col.text('id', 'Voucher', { primary: true }),
@@ -443,6 +481,7 @@ export function ExpensesPage() {
 
 export function PayrollPage() {
   const toast = useToast()
+  const exportCsv = useExport()
   const last = PAYROLL[0]
   return (
     <div>
@@ -452,7 +491,29 @@ export function PayrollPage() {
         breadcrumb={[{ label: 'Finance' }, { label: 'Payroll' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Payroll register exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'payroll-register',
+                  [
+                    { key: 'id', header: 'Cycle ID' },
+                    { key: 'month', header: 'Month' },
+                    { key: 'employees', header: 'Employees' },
+                    { key: 'gross', header: 'Gross (₹)' },
+                    { key: 'tds', header: 'TDS (₹)' },
+                    { key: 'pf', header: 'PF (₹)' },
+                    { key: 'net', header: 'Net Payable (₹)' },
+                    { key: 'status', header: 'Status' },
+                  ],
+                  PAYROLL,
+                  { label: 'cycles' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('Payroll run initiated for November')}>Run Payroll</Button>
           </>
         }

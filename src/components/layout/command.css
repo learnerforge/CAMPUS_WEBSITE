@@ -1,0 +1,200 @@
+/* ==========================================================================
+   Command palette — the ⌘K search across the whole campus
+   ========================================================================== */
+
+.cmd__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(48px, 12vh, 140px) var(--sp-4) var(--sp-4);
+  background: rgba(17, 24, 39, 0.42);
+  backdrop-filter: blur(3px);
+  animation: cmd-fade 140ms var(--ease);
+}
+
+@keyframes cmd-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.cmd {
+  width: 100%;
+  max-width: 640px;
+  max-height: min(560px, 74vh);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(10, 10, 10, 0.28);
+  animation: cmd-rise 180ms var(--ease);
+}
+
+@keyframes cmd-rise {
+  from { opacity: 0; transform: translateY(-8px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---- Search field ---- */
+
+.cmd__search {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-subtle);
+}
+
+.cmd__search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font: inherit;
+  font-size: var(--fs-lg);
+  color: var(--text-primary);
+}
+
+.cmd__search input::placeholder { color: var(--text-subtle); }
+
+.cmd__search kbd,
+.cmd__foot kbd {
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+/* ---- Results ---- */
+
+.cmd__results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+.cmd__group + .cmd__group { margin-top: 4px; }
+
+.cmd__group-title {
+  margin: 0;
+  padding: 10px 10px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-subtle);
+}
+
+.cmd__row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 8px 10px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--t-fast);
+}
+
+.cmd__row.is-active { background: var(--surface-alt); }
+
+.cmd__row-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--surface-alt);
+  color: var(--text-secondary);
+}
+
+.cmd__row.is-active .cmd__row-icon {
+  background: var(--indigo-600);
+  color: #fff;
+}
+
+.cmd__row-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.35;
+}
+
+.cmd__row-text strong {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmd__row-text span {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cmd__row-go {
+  flex-shrink: 0;
+  color: var(--text-subtle);
+  opacity: 0;
+  transition: opacity var(--t-fast);
+}
+
+.cmd__row.is-active .cmd__row-go { opacity: 1; }
+
+.cmd__empty {
+  margin: 0;
+  padding: 28px 16px;
+  text-align: center;
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+}
+
+/* ---- Footer ---- */
+
+.cmd__foot {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 9px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+}
+
+.cmd__foot span { display: inline-flex; align-items: center; gap: 4px; }
+
+.cmd__count { margin-left: auto; }
+
+@media (max-width: 640px) {
+  .cmd__backdrop { padding: 0; align-items: stretch; }
+
+  .cmd {
+    max-width: none;
+    max-height: none;
+    height: 100%;
+    border: none;
+    border-radius: 0;
+  }
+
+  .cmd__foot { display: none; }
+}

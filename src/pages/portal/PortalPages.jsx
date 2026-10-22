@@ -23,6 +23,7 @@ import {
   STUDENT_TIMETABLE,
   LIBRARY_ITEMS,
 } from '../../data/mock'
+import { useExport } from '../../utils/useExport'
 import './portal.css'
 
 /* ------------------------------------------------------------------ */
@@ -31,6 +32,7 @@ import './portal.css'
 
 export function PortalDashboard() {
   const toast = useToast()
+  const exportCsv = useExport()
   const attendanceAvg = Math.round(
     STUDENT_ATTENDANCE_SUBJECT.reduce((s, r) => s + r.pct, 0) / STUDENT_ATTENDANCE_SUBJECT.length,
   )
@@ -44,7 +46,24 @@ export function PortalDashboard() {
         subtitle="21CS042 · B.Tech Computer Science & Engineering · Semester 7 · Section CSE-A"
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Report card downloaded')}>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'report-card-21CS042',
+                  [
+                    { key: 'sem', header: 'Semester' },
+                    { key: 'sgpa', header: 'SGPA' },
+                    { key: 'credits', header: 'Credits' },
+                    { key: 'backlogs', header: 'Backlogs' },
+                    { key: 'status', header: 'Status' },
+                  ],
+                  STUDENT_SEMESTERS,
+                  { label: 'semesters' },
+                )
+              }
+            >
               Report Card
             </Button>
             <Button icon="wallet" onClick={() => toast.info('Opening fee payment…')}>
@@ -142,13 +161,37 @@ export function PortalDashboard() {
 /* ------------------------------------------------------------------ */
 
 export function MyCourses() {
-  const toast = useToast()
+  const exportCsv = useExport()
   return (
     <div>
       <PageHeader
         title="My Courses"
         subtitle="Semester 7 · 26 credits registered"
-        actions={<Button variant="secondary" icon="download" onClick={() => toast.info('Course list exported')}>Export</Button>}
+        actions={
+          <Button
+            variant="secondary"
+            icon="download"
+            onClick={() =>
+              exportCsv(
+                'my-courses',
+                [
+                  { key: 'code', header: 'Code' },
+                  { key: 'name', header: 'Course' },
+                  { key: 'faculty', header: 'Faculty' },
+                  { key: 'credits', header: 'Credits' },
+                  { key: 'attendance', header: 'Attendance %' },
+                  { key: 'marks', header: 'Marks' },
+                  { key: 'grade', header: 'Grade' },
+                  { key: 'status', header: 'Status' },
+                ],
+                STUDENT_COURSES,
+                { label: 'courses' },
+              )
+            }
+          >
+            Export
+          </Button>
+        }
       />
       <div className="ptr__course-grid">
         {STUDENT_COURSES.map((c) => (

@@ -12,7 +12,6 @@ import {
   ProgressBar,
 } from '../components/ui'
 import { useAuth } from '../context/AuthContext'
-import { useToast } from '../context/ToastContext'
 import {
   ACTIVITY_FEED,
   AI_INSIGHTS,
@@ -26,6 +25,7 @@ import {
   ENQUIRIES,
 } from '../data/mock'
 import { MODULE_TILES } from '../data/nav'
+import { useExport } from '../utils/useExport'
 import './dashboard.css'
 
 const INSIGHT_TONE = {
@@ -37,8 +37,8 @@ const INSIGHT_TONE = {
 
 export default function Dashboard() {
   const { user } = useAuth()
-  const toast = useToast()
   const navigate = useNavigate()
+  const exportCsv = useExport()
   const [range, setRange] = useState('This Month')
 
   const greeting = useMemo(() => {
@@ -86,7 +86,22 @@ export default function Dashboard() {
             <Button variant="ai" icon="medha" onClick={() => navigate('/app/medha')}>
               Ask Medha
             </Button>
-            <Button icon="download" onClick={() => toast.info('Dashboard report is being prepared…')}>
+            <Button
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'dashboard-fee-collection',
+                  [
+                    { key: 'month', header: 'Month' },
+                    { key: 'collected', header: 'Collected (₹)' },
+                    { key: 'target', header: 'Target (₹)' },
+                    { key: 'variance', header: 'Variance (₹)', csv: (r) => r.collected - r.target },
+                  ],
+                  FEE_COLLECTION_TREND,
+                  { label: 'months' },
+                )
+              }
+            >
               Export
             </Button>
           </>

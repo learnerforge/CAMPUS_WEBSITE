@@ -15,7 +15,8 @@ import {
 } from '../../components/ui'
 import ListPage, { col } from '../../components/ListPage'
 import { useToast } from '../../context/ToastContext'
-import { STAFF, LEAVE_REQUESTS, APPRAISALS, RESEARCH_PROFILES, FACULTY } from '../../data/mock'
+import { STAFF, LEAVE_REQUESTS, APPRAISALS, RESEARCH_PROFILES } from '../../data/mock'
+import { useExport } from '../../utils/useExport'
 import './people.css'
 
 /* ------------------------------------------------------------------ */
@@ -24,6 +25,7 @@ import './people.css'
 
 export function PeopleOverview() {
   const toast = useToast()
+  const exportCsv = useExport()
   const deptMix = STAFF.reduce((acc, s) => {
     acc[s.dept] = (acc[s.dept] || 0) + 1
     return acc
@@ -47,7 +49,23 @@ export function PeopleOverview() {
         breadcrumb={[{ label: 'Campus Systems' }, { label: 'People' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('People report exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'people-department-mix',
+                  [
+                    { key: 'department', header: 'Department' },
+                    { key: 'staff', header: 'Staff' },
+                  ],
+                  mix.map((m) => ({ department: m.label, staff: m.value })),
+                  { label: 'departments' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('Staff onboarding form opened')}>Add Staff</Button>
           </>
         }
@@ -146,10 +164,7 @@ export function DirectoryPage() {
         { label: 'Reporting To', value: new Set(STAFF.map((s) => s.reportsTo)).size, icon: 'layers', accent: 'success' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Directory exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('Staff onboarding form opened')}>Add Staff</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('Staff onboarding form opened')}>Add Staff</Button>
       }
       columns={[
         col.text('id', 'Employee ID', { primary: true }),
@@ -275,14 +290,46 @@ export function OnboardingPage() {
 /* ------------------------------------------------------------------ */
 
 export function StaffAttendancePage() {
-  const toast = useToast()
+  const exportCsv = useExport()
+
+  const roster = [
+    { id: 'SA1', name: 'Dr. S. Iyer', dept: 'CSE', in: '08:52', out: '—', hours: 6.1, status: 'Present' },
+    { id: 'SA2', name: 'Dr. R. Sharma', dept: 'Physics', in: '09:04', out: '—', hours: 5.9, status: 'Present' },
+    { id: 'SA3', name: 'Prof. K. Nair', dept: 'CSE', in: '09:31', out: '—', hours: 5.5, status: 'Late' },
+    { id: 'SA4', name: 'S. Venkatesh', dept: 'Accounts', in: '—', out: '—', hours: 0, status: 'On Leave' },
+    { id: 'SA5', name: 'Prof. D. Naik', dept: 'Hostel', in: '08:45', out: '—', hours: 6.2, status: 'Present' },
+    { id: 'SA6', name: 'Ravi Kumar', dept: 'IT', in: '09:18', out: '—', hours: 5.8, status: 'Present' },
+  ]
+
   return (
     <div>
       <PageHeader
         title="Staff Attendance"
         subtitle="Daily presence, late arrivals and department-wise patterns."
         breadcrumb={[{ label: 'People' }, { label: 'Staff Attendance' }]}
-        actions={<Button variant="secondary" icon="download" onClick={() => toast.info('Attendance report exported')}>Export</Button>}
+        actions={
+          <Button
+            variant="secondary"
+            icon="download"
+            onClick={() =>
+              exportCsv(
+                'staff-attendance',
+                [
+                  { key: 'name', header: 'Name' },
+                  { key: 'dept', header: 'Department' },
+                  { key: 'in', header: 'Marked In' },
+                  { key: 'out', header: 'Marked Out' },
+                  { key: 'hours', header: 'Hours' },
+                  { key: 'status', header: 'Status' },
+                ],
+                roster,
+                { label: 'staff' },
+              )
+            }
+          >
+            Export
+          </Button>
+        }
       />
 
       <div className="listpage__stats">
@@ -302,14 +349,7 @@ export function StaffAttendancePage() {
             col.number('hours', 'Hours'),
             col.status('status'),
           ]}
-          rows={[
-            { id: 'SA1', name: 'Dr. S. Iyer', dept: 'CSE', in: '08:52', out: '—', hours: 6.1, status: 'Present' },
-            { id: 'SA2', name: 'Dr. R. Sharma', dept: 'Physics', in: '09:04', out: '—', hours: 5.9, status: 'Present' },
-            { id: 'SA3', name: 'Prof. K. Nair', dept: 'CSE', in: '09:31', out: '—', hours: 5.5, status: 'Late' },
-            { id: 'SA4', name: 'S. Venkatesh', dept: 'Accounts', in: '—', out: '—', hours: 0, status: 'On Leave' },
-            { id: 'SA5', name: 'Prof. D. Naik', dept: 'Hostel', in: '08:45', out: '—', hours: 6.2, status: 'Present' },
-            { id: 'SA6', name: 'Ravi Kumar', dept: 'IT', in: '09:18', out: '—', hours: 5.8, status: 'Present' },
-          ]}
+          rows={roster}
         />
       </Card>
     </div>
@@ -379,7 +419,6 @@ export function LeavePage() {
 /* ------------------------------------------------------------------ */
 
 export function AppraisalPage() {
-  const toast = useToast()
   const avg = (APPRAISALS.reduce((s, a) => s + a.rating, 0) / APPRAISALS.length).toFixed(2)
   return (
     <ListPage
@@ -395,7 +434,6 @@ export function AppraisalPage() {
         { label: 'Finalized', value: APPRAISALS.filter((a) => a.status === 'Finalized').length, icon: 'checkCircle', accent: 'success' },
         { label: 'Under Review', value: APPRAISALS.filter((a) => a.status === 'Under Review').length, icon: 'clock', accent: 'warning' },
       ]}
-      actions={<Button variant="secondary" icon="download" onClick={() => toast.info('Appraisal report exported')}>Export</Button>}
       columns={[
         col.text('employee', 'Employee', { primary: true }),
         col.badge('cycle', 'Cycle', 'indigo'),

@@ -13,6 +13,7 @@ import {
   StatCard,
   statusTone,
 } from './ui'
+import { useExport } from '../utils/useExport'
 import './datapage.css'
 
 /**
@@ -51,6 +52,7 @@ export default function ListPage({
   )
   const [selected, setSelected] = useState(null)
   const [selectedRows, setSelectedRows] = useState([])
+  const exportCsv = useExport()
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -97,7 +99,18 @@ export default function ListPage({
         title={title}
         subtitle={subtitle}
         breadcrumb={breadcrumb}
-        actions={actions}
+        actions={
+          <>
+            {actions}
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() => exportCsv(title, columns, filtered, { label: entityName })}
+            >
+              Export
+            </Button>
+          </>
+        }
       />
 
       {stats.length > 0 && (

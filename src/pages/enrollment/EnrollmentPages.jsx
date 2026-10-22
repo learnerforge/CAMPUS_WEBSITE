@@ -24,6 +24,7 @@ import './enrollment.css'
 
 export function EnrollmentOverview() {
   const toast = useToast()
+  const exportCsv = useExport()
   const stats = ADMISSIONS_STATS
 
   const funnel = [
@@ -49,7 +50,23 @@ export function EnrollmentOverview() {
         breadcrumb={[{ label: 'Campus Systems' }, { label: 'Enrollment' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Admission funnel exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'enrollment-admission-funnel',
+                  [
+                    { key: 'label', header: 'Stage' },
+                    { key: 'value', header: 'Candidates' },
+                  ],
+                  funnel,
+                  { label: 'stages' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('New enquiry form opened')}>New Enquiry</Button>
           </>
         }
@@ -140,10 +157,7 @@ export function EnquiriesPage() {
         { label: 'Converted', value: ENQUIRIES.filter((e) => e.status === 'Admitted').length, icon: 'checkCircle', accent: 'success' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Enquiry list exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('New enquiry form opened')}>Add Enquiry</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('New enquiry form opened')}>Add Enquiry</Button>
       }
       columns={[
         col.text('id', 'Enquiry', { primary: true }),
@@ -233,10 +247,7 @@ export function ApplicationsPage() {
         { label: 'Docs Missing', value: APPLICATIONS.filter((a) => a.docs === 'Incomplete').length, icon: 'alert', accent: 'danger' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Application list exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('New application form opened')}>Add Application</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('New application form opened')}>Add Application</Button>
       }
       columns={[
         col.text('id', 'Application', { primary: true }),

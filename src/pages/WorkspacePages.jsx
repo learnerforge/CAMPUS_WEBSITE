@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   PageHeader,
-  ProgressBar,
   StatCard,
   DataTable,
   Tabs,
@@ -21,7 +20,13 @@ import {
   ENROLLMENT_BREAKDOWN,
   PAYROLL,
   ACADEMIC_YEARS,
+  STUDENTS,
+  OBE_REPORTS,
+  APPRAISALS,
+  HOSTELS,
+  ADMISSIONS_STATS,
 } from '../data/mock'
+import { useExport } from '../utils/useExport'
 import './workspace.css'
 
 /* ------------------------------------------------------------------ */
@@ -347,6 +352,7 @@ export function NoticesPage() {
 
 export function ReportsPage() {
   const toast = useToast()
+  const exportCsv = useExport()
   const [tab, setTab] = useState('collection')
 
   const reports = [
@@ -358,6 +364,91 @@ export function ReportsPage() {
     { id: 'RP-06', name: 'Staff Appraisal Summary', type: 'People', period: '2025-26', generated: '2026-10-02', size: '520 KB', format: 'PDF' },
     { id: 'RP-07', name: 'Hostel Occupancy', type: 'Operations', period: 'October 2026', generated: '2026-10-01', size: '96 KB', format: 'CSV' },
   ]
+
+  /* Each catalogue entry points at the dataset it summarises, so "Download"
+     produces the report rather than a placeholder file. */
+  const reportData = {
+    'RP-01': {
+      columns: [
+        { key: 'month', header: 'Month' },
+        { key: 'collected', header: 'Collected (₹)' },
+        { key: 'target', header: 'Target (₹)' },
+        { key: 'variance', header: 'Variance (₹)', csv: (r) => r.collected - r.target },
+      ],
+      rows: FEE_COLLECTION_TREND,
+    },
+    'RP-02': {
+      columns: [
+        { key: 'name', header: 'Student' },
+        { key: 'roll', header: 'Roll No' },
+        { key: 'program', header: 'Programme' },
+        { key: 'attendance', header: 'Attendance %' },
+        { key: 'cgpa', header: 'CGPA' },
+        { key: 'status', header: 'Status' },
+      ],
+      rows: STUDENTS.filter((s) => s.attendance < 75),
+    },
+    'RP-03': {
+      columns: [
+        { key: 'id', header: 'Mapping ID' },
+        { key: 'program', header: 'Programme' },
+        { key: 'course', header: 'Course' },
+        { key: 'po', header: 'PO' },
+        { key: 'ps', header: 'PS' },
+        { key: 'co', header: 'CO' },
+        { key: 'level', header: 'Attainment' },
+        { key: 'status', header: 'Status' },
+      ],
+      rows: OBE_REPORTS,
+    },
+    'RP-04': {
+      columns: [
+        { key: 'month', header: 'Month' },
+        { key: 'employees', header: 'Employees' },
+        { key: 'gross', header: 'Gross (₹)' },
+        { key: 'tds', header: 'TDS (₹)' },
+        { key: 'pf', header: 'PF (₹)' },
+        { key: 'net', header: 'Net Payable (₹)' },
+        { key: 'status', header: 'Status' },
+      ],
+      rows: PAYROLL,
+    },
+    'RP-05': {
+      columns: [
+        { key: 'stage', header: 'Stage' },
+        { key: 'candidates', header: 'Candidates' },
+      ],
+      rows: [
+        { stage: 'Applications', candidates: ADMISSIONS_STATS.applications },
+        { stage: 'Shortlisted', candidates: ADMISSIONS_STATS.shortlisted },
+        { stage: 'Confirmed', candidates: ADMISSIONS_STATS.confirmed },
+        { stage: 'Offer Released', candidates: ADMISSIONS_STATS.offerReleased },
+        { stage: 'Joined', candidates: ADMISSIONS_STATS.joined },
+      ],
+    },
+    'RP-06': {
+      columns: [
+        { key: 'employee', header: 'Employee' },
+        { key: 'cycle', header: 'Cycle' },
+        { key: 'rating', header: 'Rating' },
+        { key: 'reviewer', header: 'Reviewer' },
+        { key: 'status', header: 'Status' },
+      ],
+      rows: APPRAISALS,
+    },
+    'RP-07': {
+      columns: [
+        { key: 'id', header: 'Block' },
+        { key: 'name', header: 'Hostel' },
+        { key: 'type', header: 'Type' },
+        { key: 'warden', header: 'Warden' },
+        { key: 'capacity', header: 'Capacity' },
+        { key: 'occupied', header: 'Occupied' },
+        { key: 'vacant', header: 'Vacant', csv: (r) => r.capacity - r.occupied },
+      ],
+      rows: HOSTELS,
+    },
+  }
 
   return (
     <div>
@@ -423,11 +514,23 @@ export function ReportsPage() {
             {
               key: 'download',
               header: '',
-              render: (r) => (
-                <Button size="sm" variant="secondary" icon="download" onClick={() => toast.info(`Downloading ${r.name}`)}>
-                  Download
-                </Button>
-              ),
+              render: (r) => {
+                const data = reportData[r.id]
+                return (
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    icon="download"
+                    onClick={() =>
+                      data
+                        ? exportCsv(r.name, data.columns, data.rows, { label: 'rows' })
+                        : toast.info(`${r.name} is being regenerated`)
+                    }
+                  >
+                    Download
+                  </Button>
+                )
+              },
             },
           ]}
           rows={tab === 'all' ? reports : reports.filter((r) => r.type.toLowerCase() === tab)}

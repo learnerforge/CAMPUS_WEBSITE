@@ -1,14 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import { useAuth } from '../../context/AuthContext'
 import { NAV_SECTIONS, STUDENT_NAV } from '../../data/nav'
+import CommandPalette from './CommandPalette'
+import { HelpMenu, NotificationsMenu } from './TopbarMenus'
 import './shell.css'
 
 export default function AppShell({ children, title }) {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [expanded, setExpanded] = useState({})
+  const [paletteOpen, setPaletteOpen] = useState(false)
   const { user, logout } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
@@ -38,6 +41,18 @@ export default function AppShell({ children, title }) {
     logout()
     navigate('/login', { replace: true })
   }
+
+  /* ⌘K / Ctrl+K opens the command palette from anywhere in the shell. */
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault()
+        setPaletteOpen((o) => !o)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   return (
     <div className={`shell ${collapsed ? 'shell--collapsed' : ''} ${mobileOpen ? 'shell--mobile-open' : ''}`}>
@@ -160,20 +175,19 @@ export default function AppShell({ children, title }) {
             <h2>{title}</h2>
           </div>
 
-          <div className="shell__topbar-search">
+          <button
+            className="shell__topbar-search"
+            onClick={() => setPaletteOpen(true)}
+            aria-label="Search the campus"
+          >
             <Icon name="search" size={16} />
-            <input type="search" placeholder="Search students, courses, fees…" />
+            <span className="shell__topbar-search-text">Search students, courses, fees…</span>
             <kbd>⌘K</kbd>
-          </div>
+          </button>
 
           <div className="shell__topbar-actions">
-            <button className="shell__icon-btn" aria-label="Help">
-              <Icon name="help" size={18} />
-            </button>
-            <button className="shell__icon-btn" aria-label="Notifications">
-              <Icon name="bell" size={18} />
-              <i className="shell__notif-dot" />
-            </button>
+            <HelpMenu onOpenShortcuts={() => setPaletteOpen(true)} />
+            <NotificationsMenu />
             <div className="shell__user">
               <span className="shell__avatar">{user?.avatar ?? 'U'}</span>
               <div className="shell__user-text">
@@ -189,6 +203,13 @@ export default function AppShell({ children, title }) {
 
         <main className="shell__content">{children}</main>
       </div>
+
+      <CommandPalette
+        open={paletteOpen}
+        onClose={() => setPaletteOpen(false)}
+        sections={visibleSections}
+        role={user?.role}
+      />
     </div>
   )
 }

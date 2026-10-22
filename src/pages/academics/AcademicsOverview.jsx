@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import Icon from '../../components/ui/Icon'
 import { Badge, Button, Card, PageHeader, ProgressBar, StatCard, BarChart, DonutChart, Legend } from '../../components/ui'
+import { useToast } from '../../context/ToastContext'
+import { useExport } from '../../utils/useExport'
 import {
   PROGRAMS,
   COURSES,
@@ -13,6 +15,8 @@ import {
 import './academics.css'
 
 export function AcademicsOverview() {
+  const toast = useToast()
+  const exportCsv = useExport()
   const totalStudents = PROGRAMS.reduce((s, p) => s + p.filled, 0)
   const totalSeats = PROGRAMS.reduce((s, p) => s + p.seats, 0)
   const avgAtt = (
@@ -34,8 +38,29 @@ export function AcademicsOverview() {
         breadcrumb={[{ label: 'Campus Systems' }, { label: 'Academics' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download">Export</Button>
-            <Button icon="plus" onClick={() => window.alert('New course creation')} >New Course</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'academics-programme-intake',
+                  [
+                    { key: 'code', header: 'Code' },
+                    { key: 'name', header: 'Programme' },
+                    { key: 'dept', header: 'Department' },
+                    { key: 'seats', header: 'Sanctioned Seats' },
+                    { key: 'filled', header: 'Admitted' },
+                  ],
+                  PROGRAMS,
+                  { label: 'programmes' },
+                )
+              }
+            >
+              Export
+            </Button>
+            <Button icon="plus" onClick={() => toast.success('New course creation form opened')}>
+              New Course
+            </Button>
           </>
         }
       />

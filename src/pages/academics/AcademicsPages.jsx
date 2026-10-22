@@ -1,19 +1,18 @@
 import { useState } from 'react'
 import Icon from '../../components/ui/Icon'
 import {
-  Badge,
   Button,
   Card,
   PageHeader,
   ProgressBar,
   StatCard,
   DataTable,
-  Modal,
   Select,
   Tabs,
 } from '../../components/ui'
 import ListPage, { col } from '../../components/ListPage'
 import { useToast } from '../../context/ToastContext'
+import { useExport } from '../../utils/useExport'
 import {
   ATTENDANCE_SESSIONS,
   COURSES,
@@ -23,7 +22,6 @@ import {
   TIMETABLE,
   STUDENTS,
   FACULTY,
-  PROGRAMS,
 } from '../../data/mock'
 import './academics.css'
 
@@ -33,6 +31,7 @@ import './academics.css'
 
 export function CoursesPage() {
   const toast = useToast()
+  const exportCsv = useExport()
   const [detail, setDetail] = useState(null)
 
   return (
@@ -65,7 +64,29 @@ export function CoursesPage() {
         ]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Course catalogue exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'course-catalogue',
+                  [
+                    { key: 'code', header: 'Code' },
+                    { key: 'name', header: 'Course Name' },
+                    { key: 'program', header: 'Programme' },
+                    { key: 'semester', header: 'Semester' },
+                    { key: 'credits', header: 'Credits' },
+                    { key: 'faculty', header: 'Faculty' },
+                    { key: 'students', header: 'Enrolled' },
+                    { key: 'type', header: 'Type' },
+                  ],
+                  COURSES,
+                  { label: 'courses' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('Course creation form opened')}>New Course</Button>
           </>
         }
@@ -129,6 +150,7 @@ export function CoursesPage() {
 
 export function AttendancePage() {
   const toast = useToast()
+  const exportCsv = useExport()
   const [tab, setTab] = useState('sessions')
   const completed = ATTENDANCE_SESSIONS.filter((s) => s.status === 'Completed')
   const avg = completed.length
@@ -143,7 +165,30 @@ export function AttendancePage() {
         breadcrumb={[{ label: 'Academics' }, { label: 'Attendance' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Attendance report exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'attendance-sessions',
+                  [
+                    { key: 'id', header: 'Session' },
+                    { key: 'course', header: 'Course' },
+                    { key: 'date', header: 'Date' },
+                    { key: 'time', header: 'Time' },
+                    { key: 'faculty', header: 'Faculty' },
+                    { key: 'present', header: 'Present' },
+                    { key: 'total', header: 'Strength' },
+                    { key: 'pct', header: 'Attendance %' },
+                    { key: 'status', header: 'Status' },
+                  ],
+                  ATTENDANCE_SESSIONS,
+                  { label: 'sessions' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="check" onClick={() => toast.success('Attendance marked for today’s sessions')}>Mark Attendance</Button>
           </>
         }
@@ -216,6 +261,7 @@ export function AttendancePage() {
 
 export function ExaminationsPage() {
   const toast = useToast()
+  const exportCsv = useExport()
   return (
     <ListPage
       title="Examinations"
@@ -244,7 +290,30 @@ export function ExaminationsPage() {
       ]}
       actions={
         <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Results exported')}>Export</Button>
+          <Button
+            variant="secondary"
+            icon="download"
+            onClick={() =>
+              exportCsv(
+                'examinations',
+                [
+                  { key: 'id', header: 'Exam ID' },
+                  { key: 'course', header: 'Course' },
+                  { key: 'type', header: 'Type' },
+                  { key: 'date', header: 'Date' },
+                  { key: 'max', header: 'Max Marks' },
+                  { key: 'avg', header: 'Average' },
+                  { key: 'pass', header: 'Pass %' },
+                  { key: 'students', header: 'Students' },
+                  { key: 'status', header: 'Status' },
+                ],
+                EXAMINATIONS,
+                { label: 'examinations' },
+              )
+            }
+          >
+            Export
+          </Button>
           <Button icon="plus" onClick={() => toast.success('New examination scheduled')}>Schedule Exam</Button>
         </>
       }
@@ -335,10 +404,7 @@ export function OBEPage() {
         { label: 'High Attainment', value: OBE_REPORTS.filter((o) => o.level === 'High').length, icon: 'trendingUp', accent: 'violet' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('OBE report exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('New OBE mapping started')}>New Mapping</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('New OBE mapping started')}>New Mapping</Button>
       }
       columns={[
         col.text('course', 'Course', { primary: true }),
@@ -395,7 +461,6 @@ export function OBEPage() {
 /* ------------------------------------------------------------------ */
 
 export function FeedbackPage() {
-  const toast = useToast()
   return (
     <ListPage
       title="Course Feedback"
@@ -410,7 +475,6 @@ export function FeedbackPage() {
         { label: 'Comments', value: 98, icon: 'messageSquare', accent: 'info' },
         { label: 'Open Cycles', value: 1, icon: 'clock', accent: 'warning' },
       ]}
-      actions={<Button variant="secondary" icon="download" onClick={() => toast.info('Feedback exported')}>Export</Button>}
       columns={[
         col.text('course', 'Course', { primary: true }),
         col.text('faculty', 'Faculty'),
@@ -472,7 +536,7 @@ export function FeedbackPage() {
 /* ------------------------------------------------------------------ */
 
 export function TimetablePage() {
-  const toast = useToast()
+  const exportCsv = useExport()
   const [day, setDay] = useState(TIMETABLE[0].day)
 
   const selected = TIMETABLE.find((d) => d.day === day) ?? TIMETABLE[0]
@@ -490,7 +554,25 @@ export function TimetablePage() {
               onChange={setDay}
               options={TIMETABLE.map((d) => ({ value: d.day, label: d.day }))}
             />
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Timetable exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  `timetable-${day.toLowerCase()}`,
+                  [
+                    { key: 'time', header: 'Time' },
+                    { key: 'course', header: 'Course' },
+                    { key: 'room', header: 'Room' },
+                    { key: 'faculty', header: 'Faculty' },
+                  ],
+                  selected.slots,
+                  { label: 'classes' },
+                )
+              }
+            >
+              Export
+            </Button>
           </>
         }
       />
@@ -559,10 +641,7 @@ export function StudentsPage() {
         { label: 'Hosters', value: STUDENTS.filter((s) => s.hostel !== 'Day Scholar').length, icon: 'bed', accent: 'info' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Student register exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('Student admission form opened')}>Add Student</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('Student admission form opened')}>Add Student</Button>
       }
       columns={[
         col.text('roll', 'Roll No', { primary: true }),
@@ -626,7 +705,6 @@ export function StudentsPage() {
 /* ------------------------------------------------------------------ */
 
 export function FacultyPage() {
-  const toast = useToast()
   return (
     <ListPage
       title="Faculty"
@@ -644,7 +722,6 @@ export function FacultyPage() {
         { label: 'Avg Courses / Faculty', value: (FACULTY.reduce((s, f) => s + f.courses, 0) / FACULTY.length).toFixed(1), icon: 'book', accent: 'info' },
         { label: 'On Sabbatical', value: FACULTY.filter((f) => f.status !== 'Active').length, icon: 'clock', accent: 'warning' },
       ]}
-      actions={<Button variant="secondary" icon="download" onClick={() => toast.info('Faculty list exported')}>Export</Button>}
       columns={[
         col.text('name', 'Name', { primary: true }),
         col.text('designation', 'Designation'),

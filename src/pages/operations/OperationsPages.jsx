@@ -9,11 +9,11 @@ import {
   StatCard,
   BarChart,
   DataTable,
-  Tabs,
   Select,
 } from '../../components/ui'
 import ListPage, { col } from '../../components/ListPage'
 import { useToast } from '../../context/ToastContext'
+import { useExport } from '../../utils/useExport'
 import {
   HOSTELS,
   TRANSPORT_ROUTES,
@@ -32,6 +32,7 @@ const TICKET_PRIORITY = { High: 'danger', Medium: 'warning', Low: 'neutral' }
 
 export function OperationsOverview() {
   const toast = useToast()
+  const exportCsv = useExport()
   const hostelCapacity = HOSTELS.reduce((s, h) => s + h.capacity, 0)
   const hostelOccupied = HOSTELS.reduce((s, h) => s + h.occupied, 0)
   const openTickets = HELPDESK_TICKETS.filter((t) => !['Closed', 'Resolved'].includes(t.status)).length
@@ -51,7 +52,29 @@ export function OperationsOverview() {
         breadcrumb={[{ label: 'Campus Systems' }, { label: 'Operations' }]}
         actions={
           <>
-            <Button variant="secondary" icon="download" onClick={() => toast.info('Operations report exported')}>Export</Button>
+            <Button
+              variant="secondary"
+              icon="download"
+              onClick={() =>
+                exportCsv(
+                  'operations-hostel-occupancy',
+                  [
+                    { key: 'id', header: 'Block' },
+                    { key: 'name', header: 'Hostel' },
+                    { key: 'type', header: 'Type' },
+                    { key: 'warden', header: 'Warden' },
+                    { key: 'capacity', header: 'Capacity' },
+                    { key: 'occupied', header: 'Occupied' },
+                    { key: 'vacant', header: 'Vacant', csv: (r) => r.capacity - r.occupied },
+                    { key: 'rent', header: 'Rent (₹)' },
+                  ],
+                  HOSTELS,
+                  { label: 'hostels' },
+                )
+              }
+            >
+              Export
+            </Button>
             <Button icon="plus" onClick={() => toast.success('New ticket / request form opened')}>New Request</Button>
           </>
         }
@@ -305,10 +328,7 @@ export function LibraryPage() {
         { label: 'Available', value: LIBRARY_ITEMS.reduce((s, l) => s + l.copies - l.issued, 0), icon: 'checkCircle', accent: 'success' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Circulation report exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('New catalogue entry form opened')}>Add Title</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('New catalogue entry form opened')}>Add Title</Button>
       }
       columns={[
         col.text('id', 'Acc. No', { primary: true }),
@@ -444,10 +464,7 @@ export function PlacementsPage() {
         { label: 'Companies', value: new Set(PLACEMENTS.map((p) => p.company)).size, icon: 'building', accent: 'info' },
       ]}
       actions={
-        <>
-          <Button variant="secondary" icon="download" onClick={() => toast.info('Placement report exported')}>Export</Button>
-          <Button icon="plus" onClick={() => toast.success('Recruitment drive form opened')}>Add Drive</Button>
-        </>
+        <Button icon="plus" onClick={() => toast.success('Recruitment drive form opened')}>Add Drive</Button>
       }
       columns={[
         col.text('student', 'Student', { primary: true }),

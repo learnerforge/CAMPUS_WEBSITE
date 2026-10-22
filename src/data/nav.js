@@ -12,15 +12,8 @@ import {
   calendar,
   library,
   bed,
-  bus,
-  help,
-  award,
-  layers,
-  gift,
   wallet,
-  target,
   trendingUp,
-  phone,
   list,
 } from '../components/ui/Icon'
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Icon from '../components/ui/Icon'
-import { Badge, Button, Card, PageHeader } from '../components/ui'
+import { Badge, Card, PageHeader } from '../components/ui'
 import { useToast } from '../context/ToastContext'
 import { AI_INSIGHTS, MEDHA_SUGGESTIONS } from '../data/mock'
 import './medha.css'
@@ -290,12 +290,31 @@ export default function MedhaPage() {
   const [messages, setMessages] = useState(SEED_MESSAGES)
   const [input, setInput] = useState('')
   const [thinking, setThinking] = useState(false)
+  const [attachment, setAttachment] = useState(null)
   const endRef = useRef(null)
+  const fileRef = useRef(null)
   const toast = useToast()
 
   useEffect(() => {
     endRef.current?.scrollIntoView?.({ behavior: 'smooth', block: 'end' })
   }, [messages, thinking])
+
+  /** Human-readable file size for the attachment chip. */
+  const formatSize = (bytes) => {
+    if (!bytes) return ''
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  }
+
+  const onPickFile = (e) => {
+    const file = e.target.files?.[0]
+    /* Allow re-picking the same file. */
+    e.target.value = ''
+    if (!file) return
+    setAttachment({ name: file.name, size: file.size, type: file.type })
+    toast.success(`Attached ${file.name}`)
+  }
 
   const send = (text) => {
     const trimmed = (text ?? input).trim()
@@ -303,19 +322,33 @@ export default function MedhaPage() {
 
     const now = new Date()
     const time = now.toLocaleTimeString('en', { hour: '2-digit', minute: '2-digit', hour12: false })
+    const file = attachment
 
-    setMessages((m) => [...m, { id: `u${Date.now()}`, role: 'user', text: trimmed, time }])
+    setMessages((m) => [...m, { id: `u${Date.now()}`, role: 'user', text: trimmed, time, attachment: file }])
     setInput('')
+    setAttachment(null)
     setThinking(true)
 
     setTimeout(() => {
+      const reply = buildReply(trimmed)
+      const blocks = file
+        ? [
+            {
+              type: 'text',
+              text: `I have read **${file.name}** and folded it into the analysis below.`,
+            },
+            ...reply.blocks,
+          ]
+        : reply.blocks
+
       setMessages((m) => [
         ...m,
         {
           id: `a${Date.now()}`,
           role: 'assistant',
           time,
-          ...buildReply(trimmed),
+          ...reply,
+          blocks,
         },
       ])
       setThinking(false)
@@ -381,6 +414,23 @@ export default function MedhaPage() {
           </div>
 
           <div className="medha__composer">
+            {attachment && (
+              <div className="medha__attachment">
+                <span className="medha__attachment-icon">
+                  <Icon name="file" size={14} />
+                </span>
+                <span className="medha__attachment-name">{attachment.name}</span>
+                <span className="medha__attachment-size">{formatSize(attachment.size)}</span>
+                <button
+                  type="button"
+                  aria-label="Remove attachment"
+                  onClick={() => setAttachment(null)}
+                >
+                  <Icon name="close" size={14} />
+                </button>
+              </div>
+            )}
+
             <div className="medha__suggestions">
               {MEDHA_SUGGESTIONS.slice(0, 4).map((s) => (
                 <button key={s} onClick={() => send(s)}>
@@ -395,7 +445,19 @@ export default function MedhaPage() {
                 send()
               }}
             >
-              <button type="button" className="medha__attach" aria-label="Attach file">
+              <input
+                ref={fileRef}
+                type="file"
+                className="medha__file-input"
+                onChange={onPickFile}
+                aria-label="Choose a file to attach"
+              />
+              <button
+                type="button"
+                className="medha__attach"
+                aria-label="Attach file"
+                onClick={() => fileRef.current?.click()}
+              >
                 <Icon name="paperclip" size={18} />
               </button>
               <input
@@ -470,6 +532,12 @@ function Message({ message, onAction }) {
     return (
       <div className="medha__msg medha__msg--user">
         <div className="medha__bubble">
+          {message.attachment && (
+            <span className="medha__file">
+              <Icon name="file" size={13} />
+              {message.attachment.name}
+            </span>
+          )}
           <p>{message.text}</p>
           <span className="medha__time">{message.time}</span>
         </div>
