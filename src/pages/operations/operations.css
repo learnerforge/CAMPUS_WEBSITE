@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Operations module
+   ========================================================================== */
+
+.ops__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.ops__grid--2 { grid-template-columns: 1fr 1fr; }
+
+/* ---- Helpdesk load ---- */
+.ops__load {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ops__load li {
+  display: grid;
+  grid-template-columns: 1fr 110px 24px;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-base);
+}
+
+.ops__load-label { color: var(--text-secondary); }
+.ops__load-count { text-align: right; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+/* ---- Routes ---- */
+.ops__routes,
+.ops__places {
+  display: flex;
+  flex-direction: column;
+}
+
+.ops__routes li,
+.ops__places li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.ops__routes li:last-child,
+.ops__places li:last-child { border-bottom: none; }
+
+.ops__route-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--indigo-50);
+  color: var(--indigo-600);
+  flex-shrink: 0;
+}
+
+.ops__route-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ops__route-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.ops__route-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ops__route-load {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 110px;
+  flex-shrink: 0;
+}
+
+.ops__route-load span { font-size: var(--fs-sm); color: var(--text-muted); text-align: right; }
+
+.ops__place-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ops__place-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.ops__place-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ops__place-amt { text-align: right; display: flex; flex-direction: column; flex-shrink: 0; }
+.ops__place-amt strong { font-size: var(--fs-base); color: var(--success-600); font-variant-numeric: tabular-nums; }
+.ops__place-amt span { font-size: var(--fs-xs); color: var(--text-subtle); }
+
+@media (max-width: 1080px) {
+  .ops__grid,
+  .ops__grid--2 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .ops__route-load { display: none; }
+}

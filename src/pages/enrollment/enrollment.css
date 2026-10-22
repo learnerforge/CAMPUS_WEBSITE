@@ -1,0 +1,163 @@
+/* ==========================================================================
+   Enrollment module
+   ========================================================================== */
+
+.enr__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.enr__grid--2 { grid-template-columns: 1fr 1fr; }
+
+.enr__donut {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+/* ---- Enquiries list ---- */
+.enr__enquiries {
+  display: flex;
+  flex-direction: column;
+}
+
+.enr__enquiries li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.enr__enquiries li:last-child { border-bottom: none; }
+
+.enr__eq-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  background: var(--gray-100);
+  color: var(--text-secondary);
+}
+
+.enr__eq-score[data-band='high'] { background: var(--success-50); color: var(--success-700); }
+.enr__eq-score[data-band='mid']  { background: var(--warning-50); color: var(--warning-700); }
+.enr__eq-score[data-band='low']  { background: var(--gray-100); color: var(--text-muted); }
+
+.enr__eq-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.enr__eq-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.enr__eq-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---- Lead score cell ---- */
+.enr__score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.enr__score[data-band='high'] { background: var(--success-50); color: var(--success-700); }
+.enr__score[data-band='mid']  { background: var(--warning-50); color: var(--warning-700); }
+.enr__score[data-band='low']  { background: var(--gray-100); color: var(--text-muted); }
+
+/* ---- Pipeline ---- */
+.enr__pipeline {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.enr__pipe-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: 6px;
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}
+
+.enr__pipe-head strong { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+/* ---- Checklist ---- */
+.enr__checklist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.enr__checklist li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  background: var(--surface-alt);
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}
+
+.enr__checklist svg { color: var(--success-500); flex-shrink: 0; }
+
+/* ---- Sessions ---- */
+.enr__sessions {
+  display: flex;
+  flex-direction: column;
+}
+
+.enr__sessions li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 13px var(--sp-5);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.enr__sessions li:last-child { border-bottom: none; }
+
+.enr__sess-time {
+  display: flex;
+  flex-direction: column;
+  min-width: 128px;
+  flex-shrink: 0;
+}
+
+.enr__sess-time strong { font-size: var(--fs-base); color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.enr__sess-time span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.enr__sess-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.enr__sess-main strong { font-size: var(--fs-md); color: var(--text-primary); }
+.enr__sess-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---- Tab bar ---- */
+.enr__tabbar {
+  padding: 0 var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.enr__tabbar .tabs { border-bottom: none; }
+
+@media (max-width: 1080px) {
+  .enr__grid,
+  .enr__grid--2 { grid-template-columns: 1fr; }
+  .enr__donut { flex-direction: column; align-items: stretch; }
+  .enr__donut .donut { align-self: center; }
+}
+
+@media (max-width: 640px) {
+  .enr__checklist { grid-template-columns: 1fr; }
+  .enr__sess-time { min-width: 96px; }
+}

@@ -1,0 +1,268 @@
+/* ==========================================================================
+   Student portal
+   ========================================================================== */
+
+.ptr__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.ptr__grid--2 { grid-template-columns: 1fr 1fr; }
+
+/* ---- Today's classes ---- */
+.ptr__today {
+  display: flex;
+  flex-direction: column;
+}
+
+.ptr__today li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.ptr__today li:last-child { border-bottom: none; }
+
+.ptr__today-time {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  min-width: 108px;
+  flex-shrink: 0;
+}
+
+.ptr__today-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ptr__today-main strong { font-size: var(--fs-md); color: var(--text-primary); }
+.ptr__today-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---- Subject attendance ---- */
+.ptr__subjects {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ptr__subj-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: var(--fs-base);
+}
+
+.ptr__subj-head .mono {
+  color: var(--indigo-600);
+  font-weight: 600;
+  min-width: 58px;
+  flex-shrink: 0;
+}
+
+.ptr__subj-head .truncate { flex: 1; color: var(--text-secondary); }
+
+.ptr__subj-head strong {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.ptr__subj-head strong[data-band='good'] { color: var(--success-600); }
+.ptr__subj-head strong[data-band='mid'] { color: var(--warning-600); }
+.ptr__subj-head strong[data-band='low'] { color: var(--danger-500); }
+
+/* ---- Assignments ---- */
+.ptr__assigns,
+.ptr__notices {
+  display: flex;
+  flex-direction: column;
+}
+
+.ptr__assigns li,
+.ptr__notices li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 12px var(--sp-5);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.ptr__assigns li:last-child,
+.ptr__notices li:last-child { border-bottom: none; }
+
+.ptr__assign-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  background: var(--warning-50);
+  color: var(--warning-600);
+  flex-shrink: 0;
+}
+
+.ptr__assign-icon.is-done { background: var(--success-50); color: var(--success-600); }
+
+.ptr__assign-main,
+.ptr__notice-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.ptr__assign-main strong,
+.ptr__notice-main strong {
+  font-size: var(--fs-base);
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ptr__assign-main span,
+.ptr__notice-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---- Notices ---- */
+.ptr__notice-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--indigo-50);
+  color: var(--indigo-700);
+}
+
+.ptr__notice-date strong { font-size: var(--fs-lg); font-weight: 700; line-height: 1; }
+.ptr__notice-date em { font-style: normal; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ---- Course cards ---- */
+.ptr__course-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--sp-4);
+}
+
+.ptr__course-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.ptr__course-code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 62px;
+  height: 42px;
+  padding: 0 8px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--indigo-500), var(--violet-600));
+  color: #fff;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.ptr__course-head > div { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ptr__course-head strong { font-size: var(--fs-md); color: var(--text-primary); }
+.ptr__course-head span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ptr__course-meta {
+  display: flex;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-3);
+}
+
+.ptr__course-meta > div { display: flex; flex-direction: column; }
+.ptr__course-meta span { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-subtle); }
+.ptr__course-meta strong { font-size: var(--fs-xl); font-weight: 700; color: var(--text-primary); }
+
+/* ---- Mess ---- */
+.ptr__mess {
+  display: flex;
+  flex-direction: column;
+}
+
+.ptr__mess li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-100);
+  font-size: var(--fs-base);
+}
+
+.ptr__mess li:last-child { border-bottom: none; }
+.ptr__mess svg { color: var(--text-subtle); flex-shrink: 0; }
+.ptr__mess span { flex: 1; color: var(--text-secondary); }
+.ptr__mess strong { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+/* ---- Timetable ---- */
+.ptr__days { display: flex; gap: 4px; }
+
+.ptr__day {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: var(--t-fast);
+}
+
+.ptr__day:hover { background: var(--gray-100); }
+.ptr__day.is-active { background: var(--indigo-600); color: #fff; }
+
+.ptr__tt { display: flex; flex-direction: column; }
+
+.ptr__tt li {
+  display: grid;
+  grid-template-columns: 118px 3px 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 13px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.ptr__tt li:last-child { border-bottom: none; }
+
+.ptr__tt-time { font-size: var(--fs-base); font-weight: 600; color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+.ptr__tt-bar { align-self: stretch; border-radius: 2px; background: var(--indigo-500); }
+.ptr__tt-main { display: flex; flex-direction: column; min-width: 0; }
+.ptr__tt-main strong { font-size: var(--fs-md); color: var(--text-primary); }
+.ptr__tt-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ptr__tt-room {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ---- Tab bar ---- */
+.ptr__tabbar {
+  padding: 0 var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.ptr__tabbar .tabs { border-bottom: none; }
+
+@media (max-width: 1080px) {
+  .ptr__grid,
+  .ptr__grid--2 { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .ptr__tt li { grid-template-columns: 92px 3px 1fr; }
+  .ptr__tt-room { display: none; }
+  .ptr__today-time { min-width: 92px; }
+}

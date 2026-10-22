@@ -1,0 +1,133 @@
+/* ==========================================================================
+   People module
+   ========================================================================== */
+
+.ppl__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.ppl__grid--2 { grid-template-columns: 1fr 1fr; }
+
+.ppl__donut {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+.ppl__mt { margin-top: var(--sp-4); }
+
+/* ---- Leave items ---- */
+.ppl__leaves {
+  display: flex;
+  flex-direction: column;
+}
+
+.ppl__leaves li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.ppl__leaves li:last-child { border-bottom: none; }
+
+.ppl__leave-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ppl__leave-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.ppl__leave-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ppl__leave-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.ppl__empty {
+  padding: var(--sp-4) 0;
+  text-align: center;
+  font-size: var(--fs-base);
+  color: var(--text-subtle);
+}
+
+/* ---- Research ---- */
+.ppl__research {
+  display: flex;
+  flex-direction: column;
+}
+
+.ppl__research li {
+  padding: 11px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.ppl__research li:last-child { border-bottom: none; }
+
+.ppl__res-main { display: flex; flex-direction: column; margin-bottom: 5px; }
+.ppl__res-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.ppl__res-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.ppl__res-stats {
+  display: flex;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+}
+
+.ppl__res-stats b { color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+/* ---- Onboarding stages ---- */
+.ppl__stages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.ppl__stages li {
+  display: grid;
+  grid-template-columns: 160px 1fr 30px;
+  align-items: center;
+  gap: var(--sp-3);
+  font-size: var(--fs-base);
+}
+
+.ppl__stage-label { color: var(--text-secondary); }
+.ppl__stage-count { text-align: right; font-weight: 600; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+/* ---- Rating ---- */
+.ppl__rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  color: var(--violet-600);
+}
+
+.ppl__comp {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 7px 0;
+  font-size: var(--fs-base);
+  color: var(--text-secondary);
+}
+
+/* ---- Tab bar ---- */
+.ppl__tabbar {
+  padding: 0 var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.ppl__tabbar .tabs { border-bottom: none; }
+
+@media (max-width: 1080px) {
+  .ppl__grid,
+  .ppl__grid--2 { grid-template-columns: 1fr; }
+  .ppl__donut { flex-direction: column; align-items: stretch; }
+  .ppl__donut .donut { align-self: center; }
+}
+
+@media (max-width: 640px) {
+  .ppl__stages li { grid-template-columns: 1fr 30px; }
+  .ppl__stages .progress { grid-column: 1 / -1; }
+  .ppl__leave-actions { flex-direction: column; }
+}

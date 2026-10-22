@@ -1,0 +1,116 @@
+/* ==========================================================================
+   Faculty portal
+   ========================================================================== */
+
+.fac__today,
+.fac__tasks {
+  display: flex;
+  flex-direction: column;
+}
+
+.fac__today li {
+  display: grid;
+  grid-template-columns: 116px 3px 1fr auto;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 13px var(--sp-5);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.fac__today li:last-child,
+.fac__tasks li:last-child { border-bottom: none; }
+
+.fac__time {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.fac__bar {
+  align-self: stretch;
+  border-radius: 2px;
+  background: var(--indigo-500);
+}
+
+.fac__main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.fac__main strong { font-size: var(--fs-md); color: var(--text-primary); }
+.fac__main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---- Tasks ---- */
+.fac__tasks li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 12px var(--sp-5);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.fac__prio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.fac__prio--high { background: var(--danger-50); color: var(--danger-600); }
+.fac__prio--medium { background: var(--warning-50); color: var(--warning-600); }
+.fac__prio--low { background: var(--info-50); color: var(--info-600); }
+
+.fac__task-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.fac__task-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.fac__task-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+/* ---- Feedback ---- */
+.fac__feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.fac__feedback li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fac__fb-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fac__fb-head .mono {
+  color: var(--indigo-600);
+  font-weight: 600;
+}
+
+.fac__fb-head strong {
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.fac__fb-meta {
+  font-size: var(--fs-sm);
+  color: var(--text-subtle);
+}
+
+@media (max-width: 640px) {
+  .fac__today li { grid-template-columns: 96px 3px 1fr; }
+  .fac__today li .btn { display: none; }
+}

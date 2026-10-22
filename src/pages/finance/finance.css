@@ -1,0 +1,72 @@
+/* ==========================================================================
+   Finance module
+   ========================================================================== */
+
+.fin__grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+
+.fin__grid--2 { grid-template-columns: 1fr 1fr; }
+
+.fin__donut {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+/* ---- Transactions ---- */
+.fin__txns {
+  display: flex;
+  flex-direction: column;
+}
+
+.fin__txns li {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.fin__txns li:last-child { border-bottom: none; }
+
+.fin__txn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+.fin__txn-icon--success { background: var(--success-50); color: var(--success-600); }
+.fin__txn-icon--partial { background: var(--warning-50); color: var(--warning-600); }
+.fin__txn-icon--failed  { background: var(--danger-50); color: var(--danger-600); }
+.fin__txn-icon--refunded { background: var(--info-50); color: var(--info-600); }
+
+.fin__txn-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.fin__txn-main strong { font-size: var(--fs-base); color: var(--text-primary); }
+.fin__txn-main span { font-size: var(--fs-sm); color: var(--text-muted); }
+
+.fin__txn-amt { text-align: right; display: flex; flex-direction: column; }
+.fin__txn-amt strong { font-size: var(--fs-base); color: var(--text-primary); font-variant-numeric: tabular-nums; }
+.fin__txn-amt span { font-size: var(--fs-xs); color: var(--text-subtle); }
+
+/* ---- Tab bar ---- */
+.fin__tabbar {
+  padding: 0 var(--sp-4);
+  border-bottom: 1px solid var(--border);
+}
+
+.fin__tabbar .tabs { border-bottom: none; }
+
+@media (max-width: 1080px) {
+  .fin__grid,
+  .fin__grid--2 { grid-template-columns: 1fr; }
+  .fin__donut { flex-direction: column; align-items: stretch; }
+  .fin__donut .donut { align-self: center; }
+}

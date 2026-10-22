@@ -1,0 +1,164 @@
+/* ==========================================================================
+   ListPage
+   ========================================================================== */
+
+.listpage__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.listpage__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-alt);
+}
+
+.listpage__toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-left: auto;
+}
+
+.listpage__selected {
+  font-size: var(--fs-base);
+  font-weight: 600;
+  color: var(--indigo-700);
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  background: var(--indigo-50);
+}
+
+.listpage__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 11px var(--sp-4);
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  font-size: var(--fs-base);
+  color: var(--text-muted);
+}
+
+.listpage__footer strong { color: var(--text-primary); font-weight: 600; }
+
+.listpage__clear {
+  font-size: var(--fs-base);
+  font-weight: 500;
+  color: var(--indigo-600);
+}
+
+.listpage__clear:hover { text-decoration: underline; }
+
+/* ---- Inline progress cell ---- */
+.listpage__prog {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 108px;
+}
+
+.listpage__prog-track {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--gray-100);
+  overflow: hidden;
+}
+
+.listpage__prog-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--t-slow);
+}
+
+.listpage__prog-fill.is-good { background: var(--success-500); }
+.listpage__prog-fill.is-mid  { background: var(--warning-500); }
+.listpage__prog-fill.is-low  { background: var(--danger-500); }
+
+.listpage__prog-val {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+  min-width: 34px;
+  text-align: right;
+}
+
+.listpage__icon-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--text-secondary);
+}
+
+.listpage__icon-cell svg { color: var(--text-subtle); }
+
+/* ---- Detail modal body ---- */
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+.detail__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--sp-3) var(--sp-4);
+}
+
+.detail__field { display: flex; flex-direction: column; gap: 2px; }
+
+.detail__label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-subtle);
+}
+
+.detail__value {
+  font-size: var(--fs-md);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.detail__section-title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--border);
+}
+
+.detail__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.detail__list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: var(--fs-base);
+  padding: 7px 0;
+  border-bottom: 1px dashed var(--gray-200);
+}
+
+.detail__list li:last-child { border-bottom: none; }
+.detail__list li span { color: var(--text-muted); }
+.detail__list li strong { color: var(--text-primary); font-weight: 600; }
+
+@media (max-width: 720px) {
+  .listpage__toolbar { flex-direction: column; align-items: stretch; }
+  .listpage__toolbar-right { margin-left: 0; }
+}
