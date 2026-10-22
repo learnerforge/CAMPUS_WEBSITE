@@ -53,7 +53,7 @@
   height: 34px;
   flex-shrink: 0;
   border-radius: 9px;
-  background: linear-gradient(135deg, var(--indigo-500), var(--violet-600));
+  background: var(--brand-gradient);
   color: #fff;
   font-size: 12px;
   font-weight: 800;
@@ -68,7 +68,7 @@
 }
 
 .shell__brand-text strong {
-  color: #fff;
+  color: var(--sidebar-text-strong);
   font-size: var(--fs-lg);
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -96,7 +96,7 @@
   flex-shrink: 0;
 }
 
-.shell__collapse:hover { background: var(--sidebar-bg-hover); color: #fff; }
+.shell__collapse:hover { background: var(--sidebar-bg-hover); color: var(--sidebar-text-strong); }
 
 .shell--collapsed .shell__brand-text,
 .shell--collapsed .shell__collapse {
@@ -114,7 +114,7 @@
 }
 
 .shell__nav::-webkit-scrollbar { width: 6px; }
-.shell__nav::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border: none; }
+.shell__nav::-webkit-scrollbar-thumb { background: rgba(10, 10, 10, 0.14); border: none; }
 
 .shell__section { margin-bottom: var(--sp-5); }
 
@@ -126,7 +126,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: #5b6280;
+  color: var(--sidebar-heading);
   white-space: nowrap;
 }
 
@@ -149,17 +149,34 @@
 
 .shell__link svg { flex-shrink: 0; }
 
-.shell__link:hover { background: var(--sidebar-bg-hover); color: #dfe3f5; }
+.shell__link:hover {
+  background: color-mix(in srgb, var(--sidebar-hover) 8%, transparent);
+  color: var(--sidebar-text-strong);
+}
 
+/* The active item is marked with the indigo accent and the brand
+   gradient current-marker, matching the live portal's light sidebar. */
 .shell__link.is-active {
-  background: var(--sidebar-active);
-  color: var(--sidebar-text-active);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+  background: color-mix(in srgb, var(--sidebar-active) 11%, transparent);
+  color: var(--sidebar-active-foreground);
+  font-weight: 600;
+}
+
+.shell__link.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 18px;
+  border-radius: 0 3px 3px 0;
+  background: var(--sidebar-current-marker);
 }
 
 .shell__link.is-accent:not(.is-active) {
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.16), rgba(124, 58, 237, 0.16));
-  color: #c4b5fd;
+  background: linear-gradient(135deg, rgba(194, 69, 72, 0.14), rgba(30, 2, 127, 0.12));
+  color: var(--indigo-600);
 }
 
 .shell__link-text {
@@ -181,7 +198,7 @@
   transition: var(--t-fast);
 }
 
-.shell__chevron:hover { opacity: 1; background: rgba(255, 255, 255, 0.1); }
+.shell__chevron:hover { opacity: 1; background: rgba(10, 10, 10, 0.06); }
 .shell__chevron svg { transition: transform var(--t-fast); }
 .shell__chevron.is-open svg { transform: rotate(180deg); }
 
@@ -203,7 +220,7 @@
   margin-left: -23px;
   padding-left: 32px;
   border-radius: var(--radius-sm);
-  color: #7c84a4;
+  color: var(--sidebar-text-subtle);
   font-size: var(--fs-base);
   transition: var(--t-fast);
   position: relative;
@@ -218,21 +235,21 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #454b68;
+  background: var(--sidebar-dot);
   transition: var(--t-fast);
 }
 
-.shell__sublink:hover { color: #dfe3f5; }
+.shell__sublink:hover { color: var(--sidebar-text-strong); }
 .shell__sublink:hover::before { background: var(--indigo-400); }
 
 .shell__sublink.is-active {
-  color: #fff;
+  color: var(--indigo-600);
   font-weight: 600;
 }
 
 .shell__sublink.is-active::before {
-  background: var(--indigo-400);
-  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+  background: var(--indigo-600);
+  box-shadow: 0 0 0 3px rgba(30, 2, 127, 0.14);
 }
 
 .shell--collapsed .shell__sub { display: none; }
@@ -250,14 +267,14 @@
   gap: 10px;
   padding: 10px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.18), rgba(124, 58, 237, 0.18));
-  border: 1px solid rgba(129, 140, 248, 0.2);
+  background: linear-gradient(135deg, rgba(194, 69, 72, 0.12), rgba(30, 2, 127, 0.12));
+  border: 1px solid rgba(30, 2, 127, 0.14);
   cursor: pointer;
   transition: var(--t-fast);
   text-decoration: none;
 }
 
-.shell__ai-card:hover { border-color: rgba(129, 140, 248, 0.45); }
+.shell__ai-card:hover { border-color: rgba(30, 2, 127, 0.4); }
 
 .shell__ai-icon {
   display: flex;
@@ -266,8 +283,8 @@
   width: 30px;
   height: 30px;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #c4b5fd;
+  background: var(--brand-gradient);
+  color: #fff;
   flex-shrink: 0;
 }
 
@@ -278,9 +295,9 @@
   overflow: hidden;
 }
 
-.shell__ai-text strong { color: #e9e6ff; font-size: var(--fs-base); font-weight: 600; }
-.shell__ai-text span { color: #8b91b0; font-size: var(--fs-xs); white-space: nowrap; }
-.shell__ai-arrow { color: #6b7191; flex-shrink: 0; }
+.shell__ai-text strong { color: var(--sidebar-text-strong); font-size: var(--fs-base); font-weight: 600; }
+.shell__ai-text span { color: var(--sidebar-text-subtle); font-size: var(--fs-xs); white-space: nowrap; }
+.shell__ai-arrow { color: var(--sidebar-heading); flex-shrink: 0; }
 
 .shell--collapsed .shell__ai-text,
 .shell--collapsed .shell__ai-arrow { display: none; }
@@ -313,12 +330,18 @@
 
 .shell__menu-btn:hover { background: var(--gray-100); }
 
+.shell__topbar-title {
+  min-width: 0;
+}
+
 .shell__topbar-title h2 {
+  overflow: hidden;
   font-size: var(--fs-lg);
   font-weight: 600;
   color: var(--text-primary);
   letter-spacing: -0.01em;
   white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .shell__topbar-search {
@@ -332,7 +355,7 @@
   padding: 7px 11px;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  background: var(--surface-alt);
+  background: var(--surface-sunken);
   color: var(--text-subtle);
   transition: var(--t-fast);
 }
@@ -415,7 +438,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--indigo-500), var(--violet-600));
+  background: var(--brand-gradient);
   color: #fff;
   font-size: var(--fs-sm);
   font-weight: 700;
@@ -490,6 +513,10 @@
   }
 
   .shell--mobile-open .shell__sidebar { transform: translateX(0); }
+
+  /* The sidebar is off-canvas on narrow screens, so the main column
+     must reclaim the space it was reserving. */
+  .shell__main { margin-left: 0; }
   .shell--mobile-open .shell__main { margin-left: 0; }
   .shell--collapsed .shell__sidebar { width: var(--sidebar-w); }
   .shell--collapsed .shell__main { margin-left: 0; }

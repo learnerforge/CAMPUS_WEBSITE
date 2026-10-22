@@ -16,6 +16,9 @@ node_modules
 dist
 dist-ssr
 
+# Generated screenshots (npm run shots)
+screenshots
+
 # Editor
 .vscode/*
 !.vscode/extensions.json

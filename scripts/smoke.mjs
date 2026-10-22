@@ -374,7 +374,10 @@ window.sessionStorage.clear()
   window.localStorage.clear()
   const { container, root } = await mount('/app/dashboard')
   const text = container.textContent || ''
-  if (!/login/i.test(text) || text.includes('Welcome back')) {
+  const hasLoginForm =
+    /sign in/i.test(text) &&
+    !!container.querySelector('input[type="password"], input[name="password"]')
+  if (!hasLoginForm) {
     failures.push({ role: 'anon', path: '/app/dashboard', reason: 'anonymous access was not redirected to /login' })
     console.log('FAIL  anonymous access was not redirected to /login')
   } else {

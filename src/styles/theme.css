@@ -1,87 +1,128 @@
 /* ==========================================================================
    CampX Design Tokens & Theme
+
+   Values are lifted from the live portal's own design system
+   (https://microfrontends.campx.in/auth) so the replica matches it:
+   a deep indigo primary (#1e027f), a coral -> magenta -> indigo brand
+   gradient, a warm-neutral grey scale and Hanken Grotesk typography.
    ========================================================================== */
 
 :root {
-  /* ---- Brand: Indigo ---- */
-  --indigo-50: #eef2ff;
-  --indigo-100: #e0e7ff;
-  --indigo-200: #c7d2fe;
-  --indigo-300: #a5b4fc;
-  --indigo-400: #818cf8;
-  --indigo-500: #6366f1;
-  --indigo-600: #4f46e5;
-  --indigo-700: #4338ca;
-  --indigo-800: #3730a3;
-  --indigo-900: #312e81;
+  /* ---- Brand: Indigo (primary) ---- */
+  --indigo-50: #f5f2fc;
+  --indigo-100: #e9e2f8;
+  --indigo-200: #d3c5f0;
+  --indigo-300: #b39ce2;
+  --indigo-400: #8c6bcd;
+  --indigo-500: #5b2fb4;
+  --indigo-600: #1e027f;
+  --indigo-700: #180268;
+  --indigo-800: #12034c;
+  --indigo-900: #0b0233;
 
-  /* ---- Brand: Violet ---- */
-  --violet-400: #a78bfa;
-  --violet-500: #8b5cf6;
-  --violet-600: #7c3aed;
+  /* ---- Brand: Magenta ---- */
+  --violet-300: #e8b6e2;
+  --violet-400: #d98bd0;
+  --violet-500: #b448a5;
+  --violet-600: #822c79;
+  --violet-700: #6b2264;
+
+  /* ---- Brand: Coral ---- */
+  --coral-300: #eaa0a1;
+  --coral-400: #dd7578;
+  --coral-500: #c24548;
+  --coral-600: #a83a3d;
+
+  /* ---- Brand gradient ---- */
+  --brand-gradient: linear-gradient(135deg, #c24548 0%, #822c79 52%, #1e027f 100%);
 
   /* ---- Neutral ---- */
-  --gray-50: #f9fafb;
-  --gray-100: #f3f4f6;
-  --gray-200: #e5e7eb;
-  --gray-300: #d1d5db;
-  --gray-400: #9ca3af;
-  --gray-500: #6b7280;
-  --gray-600: #4b5563;
-  --gray-700: #374151;
-  --gray-800: #1f2937;
-  --gray-900: #111827;
+  --gray-50: #fafafa;
+  --gray-100: #f5f5f5;
+  --gray-200: #e5e5e5;
+  --gray-300: #d4d4d4;
+  --gray-400: #a1a1a1;
+  --gray-500: #737373;
+  --gray-600: #525252;
+  --gray-700: #262626;
+  --gray-800: #171717;
+  --gray-900: #0a0a0a;
 
   /* ---- Status ---- */
-  --success-50: #ecfdf5;
-  --success-100: #d1fae5;
-  --success-500: #10b981;
-  --success-600: #059669;
-  --success-700: #047857;
+  --success-50: #f2f6ea;
+  --success-100: #e3ecd4;
+  --success-500: #5d7832;
+  --success-600: #4a651d;
+  --success-700: #3b5117;
 
-  --warning-50: #fffbeb;
-  --warning-100: #fef3c7;
-  --warning-500: #f59e0b;
-  --warning-600: #d97706;
-  --warning-700: #b45309;
+  --warning-50: #fdf6e7;
+  --warning-100: #f9ebcd;
+  --warning-500: #e0b400;
+  --warning-600: #ad5800;
+  --warning-700: #8c4700;
 
-  --danger-50: #fef2f2;
-  --danger-100: #fee2e2;
-  --danger-500: #ef4444;
-  --danger-600: #dc2626;
-  --danger-700: #b91c1c;
+  --danger-50: #fdf2f2;
+  --danger-100: #fadcdd;
+  --danger-500: #dc2626;
+  --danger-600: #b91c1c;
+  --danger-700: #991b1b;
 
-  --info-50: #eff6ff;
-  --info-100: #dbeafe;
-  --info-500: #3b82f6;
-  --info-600: #2563eb;
+  --info-50: #eaf6f8;
+  --info-100: #cde9ee;
+  --info-500: #017a8f;
+  --info-600: #00667a;
+
+  /* ---- Chart series ---- */
+  --chart-1: #5b66c7;
+  --chart-2: #00aeae;
+  --chart-3: #60a750;
+  --chart-4: #e1791b;
+  --chart-5: #b24ca6;
+
+  /* ---- Component accents (overridden per instance) ---- */
+  --accent: var(--indigo-600);
+  --ins: var(--info-500);
+  --tile-accent: var(--indigo-500);
 
   /* ---- Surfaces ---- */
   --white: #ffffff;
-  --canvas: #f4f6fb;
+  --canvas: #f1f3fa;
   --surface: #ffffff;
-  --surface-alt: #f8fafc;
-  --surface-sunken: #f1f3fa;
-  --border: #e5e7eb;
-  --border-strong: #d1d5db;
+  --surface-alt: #f5f5f5;
+  --surface-sunken: #efeff1;
+  --border: #e5e5e5;
+  --border-strong: #d4d4d4;
 
-  /* ---- Text ---- */
+  /* ---- Text ----
+     The live portal renders every de-emphasised string with a single
+     muted foreground (neutral-500); there is no lighter foreground in
+     its semantic palette. --text-subtle therefore matches --text-muted
+     rather than inventing a lighter grey that fails contrast. */
   --text-primary: var(--gray-900);
   --text-secondary: var(--gray-600);
   --text-muted: var(--gray-500);
-  --text-subtle: var(--gray-400);
+  --text-subtle: var(--gray-500);
   --text-inverse: #ffffff;
 
-  /* ---- Sidebar ---- */
-  --sidebar-bg: #171a2e;
-  --sidebar-bg-hover: #222643;
+  /* ---- Sidebar ----
+     The live portal's sidebar is a light surface: canvas-coloured
+     background, indigo active accent and a gradient current marker. */
+  --sidebar-bg: #f1f3fa;
+  --sidebar-bg-hover: #e5e9f6;
   --sidebar-active: var(--indigo-600);
-  --sidebar-text: #a8aec8;
-  --sidebar-text-active: #ffffff;
-  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-active-foreground: var(--indigo-600);
+  --sidebar-hover: var(--indigo-600);
+  --sidebar-current-marker: var(--brand-gradient);
+  --sidebar-text: var(--gray-600);
+  --sidebar-text-active: var(--indigo-600);
+  --sidebar-text-strong: var(--gray-900);
+  --sidebar-text-subtle: var(--gray-600);
+  --sidebar-heading: var(--gray-600);
+  --sidebar-border: #e2e6f2;
+  --sidebar-dot: #c3c7d4;
 
   /* ---- Typography ---- */
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'SFMono-Regular', ui-monospace, Menlo, Consolas, monospace;
 
   --fs-xs: 11px;
@@ -114,12 +155,12 @@
   --radius-full: 100px;
 
   /* ---- Shadow ---- */
-  --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
-  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.08), 0 1px 2px rgba(16, 24, 40, 0.04);
-  --shadow: 0 4px 8px -2px rgba(16, 24, 40, 0.08), 0 2px 4px -2px rgba(16, 24, 40, 0.04);
-  --shadow-md: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
-  --shadow-lg: 0 25px 50px -12px rgba(16, 24, 40, 0.18);
-  --shadow-focus: 0 0 0 3px rgba(99, 102, 241, 0.18);
+  --shadow-xs: 0 1px 2px rgba(10, 10, 10, 0.05);
+  --shadow-sm: 0 1px 3px rgba(10, 10, 10, 0.08), 0 1px 2px rgba(10, 10, 10, 0.04);
+  --shadow: 0 4px 8px -2px rgba(10, 10, 10, 0.08), 0 2px 4px -2px rgba(10, 10, 10, 0.04);
+  --shadow-md: 0 12px 16px -4px rgba(10, 10, 10, 0.08), 0 4px 6px -2px rgba(10, 10, 10, 0.03);
+  --shadow-lg: 0 25px 50px -12px rgba(10, 10, 10, 0.18);
+  --shadow-focus: 0 0 0 3px rgba(30, 2, 127, 0.16);
 
   /* ---- Motion ---- */
   --ease: cubic-bezier(0.4, 0, 0.2, 1);

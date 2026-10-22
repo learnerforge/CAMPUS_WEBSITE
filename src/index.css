@@ -25,7 +25,7 @@
   font-weight: 800;
   font-size: var(--fs-lg);
   letter-spacing: 0.02em;
-  box-shadow: 0 10px 26px rgba(99, 102, 241, 0.28);
+  box-shadow: 0 10px 26px rgba(30, 2, 127, 0.28);
   animation: app-boot-pulse 1.6s var(--ease) infinite;
 }
 
